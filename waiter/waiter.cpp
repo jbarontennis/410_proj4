@@ -1,4 +1,5 @@
 #include <string>
+#include <fstream>
 #include "stdlib.h"
 
 #include "../includes/waiter.h"
@@ -14,9 +15,12 @@ Waiter::~Waiter()
 
 //gets next Order(s) from file_IO
 int Waiter::getNext(ORDER &anOrder){
-	return SUCCESS;
+	return (getNext(anOrder));
+
 }
 
 void Waiter::beWaiter() {
+
+
 }
 
