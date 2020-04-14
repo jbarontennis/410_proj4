@@ -1,7 +1,8 @@
 #include <mutex>
-
+#include <condition_variable>
 #include "../includes/baker.h"
 using namespace std;
+mutex m;
 
 Baker::Baker(int id):id(id)
 {
@@ -27,12 +28,18 @@ void Baker::bake_and_box(ORDER &anOrder) {
 }
 
 void Baker::beBaker() {
-	std::queue<ORDER> order_in_Q;
-	std::vector<ORDER> order_out_Vector;
-	bool b_WaiterIsFinished;
-	while(order_in_Q.size()>0|| b_WaiterIsFinished){
+	extern condition_variable cv_order_inQ;
+			std::queue<ORDER> order_in_Q;
+			std::vector<ORDER> order_out_Vector;
+			bool b_WaiterIsFinished;
+	while(b_WaiterIsFinished){
+
+		while(order_in_Q.size() > 0){
+		std::unique_lock<mutex> lock(m);
 		ORDER tmp = order_in_Q.front();
 		bake_and_box(tmp);
 		order_in_Q.pop();
+		order_out_Vector.push_back(tmp);
+	}
 	}
 }

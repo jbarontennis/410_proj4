@@ -1,5 +1,6 @@
 #include <string>
 #include <fstream>
+#include <condition_variable>
 #include "stdlib.h"
 
 #include "../includes/waiter.h"
@@ -20,7 +21,7 @@ int Waiter::getNext(ORDER &anOrder){
 }
 
 void Waiter::beWaiter() {
-
+	std::condition_variable cv_order_inQ;
 
 }
 
