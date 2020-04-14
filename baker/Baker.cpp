@@ -1,5 +1,6 @@
 #include <mutex>
 #include <condition_variable>
+#include "../includes/externs.h"
 #include "../includes/baker.h"
 using namespace std;
 mutex m;
@@ -26,20 +27,19 @@ void Baker::bake_and_box(ORDER &anOrder) {
 
 	}
 }
-
+//#ifdef USE_CONDITION_VAR
 void Baker::beBaker() {
-	extern condition_variable cv_order_inQ;
-			std::queue<ORDER> order_in_Q;
-			std::vector<ORDER> order_out_Vector;
-			bool b_WaiterIsFinished;
-	while(b_WaiterIsFinished){
-
-		while(order_in_Q.size() > 0){
+	{
+		std::unique_lock<mutex> lck(mutex_order_inQ);
+		cv_order_inQ.wait(lck);
+	}
+	while(!b_WaiterIsFinished && order_in_Q.size() > 0){
 		std::unique_lock<mutex> lock(m);
 		ORDER tmp = order_in_Q.front();
 		bake_and_box(tmp);
 		order_in_Q.pop();
 		order_out_Vector.push_back(tmp);
-	}
+
 	}
 }
+//#endif
