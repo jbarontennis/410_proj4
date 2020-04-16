@@ -31,15 +31,24 @@ void Baker::bake_and_box(ORDER &anOrder) {
 void Baker::beBaker() {
 	{
 		std::unique_lock<mutex> lck(mutex_order_inQ);
+		while(order_in_Q.size()==0 && !b_WaiterIsFinished){
 		cv_order_inQ.wait(lck);
-				}
+		}
+		}
+		//cout<<"made it"<<endl;
 	while(!b_WaiterIsFinished || order_in_Q.size() > 0){
-		ORDER tmp = order_in_Q.front();
-		bake_and_box(tmp);
-		order_in_Q.pop();
+		ORDER tmp;
 		{
-			std::unique_lock<mutex> lck(mutex_order_outQ);
+		std::lock_guard<mutex> lck(mutex_order_inQ);
+		tmp = order_in_Q.front();
+		order_in_Q.pop();
+		}
+		bake_and_box(tmp);
+
+		{
+			std::lock_guard<mutex> lck(mutex_order_outQ);
 			order_out_Vector.push_back(tmp);
+			//cout<<"made it here"<<endl;
 		}
 	}
 }

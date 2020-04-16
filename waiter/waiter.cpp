@@ -27,6 +27,7 @@ void Waiter::beWaiter() {
 			ORDER anOrder;
 			check = getNext(anOrder);
 			if (check == SUCCESS) {
+				std::lock_guard<mutex> lock(mutex_order_inQ);
 				order_in_Q.push(anOrder); // If successful, push to the order queue
 				cv_order_inQ.notify_all();
 			}
