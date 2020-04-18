@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 
+#include "../includes/logger.h"
 #include "../includes/box.h"
 #include "../includes/constants.h"
 #include "../includes/waiter.h"
@@ -86,8 +87,9 @@ void audit_results() {
 
 int main()
 {
+
 	std::vector<std::thread> threads;
-	doWaiter(1,"in3.txt");
+	doWaiter(1,"in2.txt");
 	for (int i = 0; i < 100; i++) {
 				threads.push_back(
 						std::thread(doBaker,i));
@@ -98,6 +100,9 @@ int main()
 	threads.clear();
 
 	audit_results();
+	Logger tmp("output.txt");
+
+
 	return SUCCESS;
 }
 
