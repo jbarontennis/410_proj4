@@ -1,9 +1,19 @@
+/**
+ * author James Baron
+ * partner Caleb Gondek
+ *
+ * Caleb completed waiter
+ * I completed baker
+ * independently completed logger
+ * 50/50% completed by both partners
+ */
 #include <string>
 #include <fstream>
 #include <condition_variable>
 #include <sstream>
 #include "stdlib.h"
 #include "../includes/externs.h"
+
 #include "../includes/waiter.h"
 
 using namespace std;

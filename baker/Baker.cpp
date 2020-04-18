@@ -1,3 +1,12 @@
+/**
+ * author James Baron
+ * partner Caleb Gondek
+ *
+ * Caleb completed waiter
+ * I completed baker
+ * independently completed logger
+ * 50/50% completed by both partners
+ */
 #include <mutex>
 #include <condition_variable>
 #include "../includes/externs.h"
@@ -6,6 +15,7 @@ using namespace std;
 
 Baker::Baker(int id):id(id)
 {
+
 }
 
 Baker::~Baker()
@@ -27,15 +37,14 @@ void Baker::bake_and_box(ORDER &anOrder) {
 
 	}
 }
-//#ifdef USE_CONDITION_VAR
+
 void Baker::beBaker() {
 	{
 		std::unique_lock<mutex> lck(mutex_order_inQ);
 		while(order_in_Q.size()==0 && !b_WaiterIsFinished){
-		cv_order_inQ.wait(lck);
+			cv_order_inQ.wait(lck);
 		}
 		}
-		//cout<<"made it"<<endl;
 	while(!b_WaiterIsFinished || order_in_Q.size() > 0){
 		ORDER tmp;
 		{
@@ -48,8 +57,6 @@ void Baker::beBaker() {
 		{
 			std::lock_guard<mutex> lck(mutex_order_outQ);
 			order_out_Vector.push_back(tmp);
-			//cout<<"made it here"<<endl;
 		}
 	}
 }
-//#endif

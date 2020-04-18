@@ -84,24 +84,35 @@ void audit_results() {
 	PRINT2("Total number boxes  = ", total_boxes);
 	PRINT2("Total orders filled = ", total_orders);
 }
-
+void log(string txt){
+	Logger tmp("output.txt");
+	tmp.log(txt);
+}
+void clearLog(){
+	Logger tmp("output.txt");
+	tmp.clearlogfile();
+}
 int main()
 {
 
 	std::vector<std::thread> threads;
-	doWaiter(1,"in2.txt");
+	doWaiter(1,"in3.txt");
 	for (int i = 0; i < 100; i++) {
-				threads.push_back(
-						std::thread(doBaker,i));
+					threads.push_back(
+							std::thread(doBaker,i));
+				}
+		for (auto &t : threads) {
+				t.join();
 			}
-	for (auto &t : threads) {
-			t.join();
-		}
-	threads.clear();
+		threads.clear();
 
 	audit_results();
-	Logger tmp("output.txt");
-
+	/*clearLog();
+	thread uno (log,"data");
+	thread dos(log,"more data");
+	thread uno (log,"data");
+	uno.join();
+	dos.join();*/
 
 	return SUCCESS;
 }

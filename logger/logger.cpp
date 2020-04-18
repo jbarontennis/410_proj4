@@ -1,3 +1,12 @@
+/**
+ * author James Baron
+ * partner Caleb Gondek
+ *
+ * Caleb completed waiter
+ * I completed baker
+ * independently completed logger
+ * 50/50% completed by both partners
+ */
 #include <mutex>
 #include "../includes/logger.h"
 using namespace std;
@@ -20,13 +29,13 @@ void Logger::clearlogfile() {
 }
 
 void Logger::log(std::string data) {
+	std::lock_guard<mutex> lck(m);
 	myFile.open(filename, std::fstream::app);
 	if (!myFile.is_open())
 		return;
 
 	std::string myline;
 	{
-	std::lock_guard<mutex> lck(m);
 	myFile << data;
 	}
 
